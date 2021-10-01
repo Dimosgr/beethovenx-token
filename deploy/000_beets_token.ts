@@ -7,13 +7,14 @@ export default async function ({ ethers, getNamedAccounts, deployments }: Hardha
 
   const { deployer } = await getNamedAccounts()
 
-  const { address } = await deploy("BeethovenxToken", {
+  const { address,  } = await deploy("BeethovenxToken", {
     from: deployer,
     log: true,
     deterministicDeployment: false,
+    contract:"contracts/BeethovenxToken.sol:BeethovenxToken"
   })
 
-  const beets = (await ethers.getContractAt("BeethovenxToken", address)) as BeethovenxToken
+  const beets = (await ethers.getContractAt("contracts/BeethovenxToken.sol:BeethovenxToken", address)) as BeethovenxToken
 
   const partnershipFundAddress = process.env.PARTNERSHIP_FUND_ADDRESS!
   // 7% of total supply
