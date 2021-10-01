@@ -3,9 +3,10 @@ echo "Flattening all contracts"
 rm -rf ./contracts/
 mkdir ./contracts/
 
-yarn hardhat flatten ./contracts/vault/Vault.sol > ./contracts/avax/VaultAvax.sol
-yarn hardhat flatten ./contracts/vault/Authorizer.sol > ./contracts/avax/Authorizer.sol
-yarn hardhat flatten ./contracts/pools/weighted/WeightedPoolFactory.sol > ./contracts/avax/WeightedPoolFactoryAvax.sol
+yarn hardhat flatten ./contracts_unflattened/token/BeethovenxToken.sol > ./contracts/BeethovenxToken.sol
+yarn hardhat flatten ./contracts_unflattened/token/BeethovenxMasterChef.sol > ./contracts/BeethovenxMasterChef.sol
+yarn hardhat flatten ./contracts_unflattened/vesting/MasterChefLpTokenTimelock.sol > ./contracts/MasterChefLpTokenTimelock.sol
+yarn hardhat flatten ./contracts_unflattened/governance/Timelock.sol > ./contracts/Timelock.sol
 
 
 echo "Removing extra SPDX licenses and experimental ABIEncoderV2 lines..."

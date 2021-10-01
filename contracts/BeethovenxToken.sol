@@ -1,10 +1,18 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: MIXED
 
-// License-Identifier: MIT
+// License-Identifier: MIXED
+
+// License-Identifier: MIXED
+
+// License-Identifier: MIXED
 
 // Sources flattened with hardhat v2.6.1 https://hardhat.org
 
 // File @openzeppelin/contracts/token/ERC20/IERC20.sol@v4.3.0
+
+// License-Identifier: MIT
+
+pragma solidity ^0.8.0;
 
 /**
  * @dev Interface of the ERC20 standard as defined in the EIP.
@@ -27,9 +35,7 @@ interface IERC20 {
      *
      * Emits a {Transfer} event.
      */
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool);
+    function transfer(address recipient, uint256 amount) external returns (bool);
 
     /**
      * @dev Returns the remaining number of tokens that `spender` will be
@@ -38,10 +44,7 @@ interface IERC20 {
      *
      * This value changes when {approve} or {transferFrom} are called.
      */
-    function allowance(address owner, address spender)
-        external
-        view
-        returns (uint256);
+    function allowance(address owner, address spender) external view returns (uint256);
 
     /**
      * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
@@ -86,12 +89,9 @@ interface IERC20 {
      * @dev Emitted when the allowance of a `spender` for an `owner` is set by
      * a call to {approve}. `value` is the new allowance.
      */
-    event Approval(
-        address indexed owner,
-        address indexed spender,
-        uint256 value
-    );
+    event Approval(address indexed owner, address indexed spender, uint256 value);
 }
+
 
 // File @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol@v4.3.0
 
@@ -121,6 +121,7 @@ interface IERC20Metadata is IERC20 {
     function decimals() external view returns (uint8);
 }
 
+
 // File @openzeppelin/contracts/utils/Context.sol@v4.3.0
 
 // License-Identifier: MIT
@@ -147,11 +148,14 @@ abstract contract Context {
     }
 }
 
+
 // File @openzeppelin/contracts/token/ERC20/ERC20.sol@v4.3.0
 
 // License-Identifier: MIT
 
 pragma solidity ^0.8.0;
+
+
 
 /**
  * @dev Implementation of the {IERC20} interface.
@@ -244,13 +248,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-balanceOf}.
      */
-    function balanceOf(address account)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function balanceOf(address account) public view virtual override returns (uint256) {
         return _balances[account];
     }
 
@@ -262,12 +260,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `recipient` cannot be the zero address.
      * - the caller must have a balance of at least `amount`.
      */
-    function transfer(address recipient, uint256 amount)
-        public
-        virtual
-        override
-        returns (bool)
-    {
+    function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
@@ -275,13 +268,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-allowance}.
      */
-    function allowance(address owner, address spender)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function allowance(address owner, address spender) public view virtual override returns (uint256) {
         return _allowances[owner][spender];
     }
 
@@ -292,12 +279,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function approve(address spender, uint256 amount)
-        public
-        virtual
-        override
-        returns (bool)
-    {
+    function approve(address spender, uint256 amount) public virtual override returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
@@ -323,10 +305,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _transfer(sender, recipient, amount);
 
         uint256 currentAllowance = _allowances[sender][_msgSender()];
-        require(
-            currentAllowance >= amount,
-            "ERC20: transfer amount exceeds allowance"
-        );
+        require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
         unchecked {
             _approve(sender, _msgSender(), currentAllowance - amount);
         }
@@ -346,16 +325,8 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function increaseAllowance(address spender, uint256 addedValue)
-        public
-        virtual
-        returns (bool)
-    {
-        _approve(
-            _msgSender(),
-            spender,
-            _allowances[_msgSender()][spender] + addedValue
-        );
+    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
+        _approve(_msgSender(), spender, _allowances[_msgSender()][spender] + addedValue);
         return true;
     }
 
@@ -373,16 +344,9 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue)
-        public
-        virtual
-        returns (bool)
-    {
+    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
         uint256 currentAllowance = _allowances[_msgSender()][spender];
-        require(
-            currentAllowance >= subtractedValue,
-            "ERC20: decreased allowance below zero"
-        );
+        require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
         unchecked {
             _approve(_msgSender(), spender, currentAllowance - subtractedValue);
         }
@@ -415,10 +379,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _beforeTokenTransfer(sender, recipient, amount);
 
         uint256 senderBalance = _balances[sender];
-        require(
-            senderBalance >= amount,
-            "ERC20: transfer amount exceeds balance"
-        );
+        require(senderBalance >= amount, "ERC20: transfer amount exceeds balance");
         unchecked {
             _balances[sender] = senderBalance - amount;
         }
@@ -544,6 +505,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     ) internal virtual {}
 }
 
+
 // File @openzeppelin/contracts/access/Ownable.sol@v4.3.0
 
 // License-Identifier: MIT
@@ -565,10 +527,7 @@ pragma solidity ^0.8.0;
 abstract contract Ownable is Context {
     address private _owner;
 
-    event OwnershipTransferred(
-        address indexed previousOwner,
-        address indexed newOwner
-    );
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
@@ -608,10 +567,7 @@ abstract contract Ownable is Context {
      * Can only be called by the current owner.
      */
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(
-            newOwner != address(0),
-            "Ownable: new owner is the zero address"
-        );
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
         _setOwner(newOwner);
     }
 
@@ -623,18 +579,21 @@ abstract contract Ownable is Context {
 }
 
 
+// File contracts_unflattened/token/BeethovenxToken.sol
+
 // License-Identifier: MIT
 
 pragma solidity 0.8.7;
 
-contract SomeWeirdToken is ERC20("SomeWeirdToken", "SWT"), Ownable {
+
+contract BeethovenxToken is ERC20("BeethovenxToken", "BEETS"), Ownable {
     uint256 public constant MAX_SUPPLY = 250_000_000e18; // 250 million beets
 
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).
     function mint(address _to, uint256 _amount) public onlyOwner {
         require(
             totalSupply() + _amount <= MAX_SUPPLY,
-            "mint: cannot exceed max supply"
+            "BEETS::mint: cannot exceed max supply"
         );
         _mint(_to, _amount);
     }

@@ -1,5 +1,6 @@
 import { ethers } from "hardhat"
-import { BeethovenxMasterChef, ERC20Mock } from "../../types"
+import { BeethovenxMasterChef } from "../../types"
+import {ERC20Mock} from "../../types/ERC20Mock";
 const { BigNumber } = require("ethers")
 
 export const BASE_TEN = 10

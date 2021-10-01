@@ -12,13 +12,13 @@ async function main() {
     data = `// SPDX-License-Identifier: MIXED\n\n${data}`;
 
     // Remove every line started with "pragma experimental ABIEncoderV2;" except the first one
-    data = data.replace(
-      /pragma experimental ABIEncoderV2;\n/gm,
-      (
-        (i) => (m) =>
-          !i++ ? m : ""
-      )(0)
-    );
+    // data = data.replace(
+    //   /pragma experimental ABIEncoderV2;\n/gm,
+    //   (
+    //     (i) => (m) =>
+    //       !i++ ? m : ""
+    //   )(0)
+    // );
 
     data = data.trim();
     fs.writeFileSync(`./contracts/${file}`, data);
