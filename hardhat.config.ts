@@ -24,7 +24,7 @@ import { removeConsoleLog } from "hardhat-preprocessor"
   // accountsBalance: "990000000000000000000",
 }*/
 
-const accounts = [process.env.DEPLOYER!, process.env.DEV!, process.env.TREASURY!]
+const accounts = [process.env.DEPLOYER!]
 
 const config: HardhatUserConfig = {
   abiExporter: {
@@ -50,15 +50,6 @@ const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: {
       default: 0,
-    },
-    dev: {
-      // Default to 1
-      default: 1,
-      // dev address mainnet
-      // 1: "",
-    },
-    treasury: {
-      default: 2,
     },
   },
   networks: {
@@ -92,16 +83,16 @@ const config: HardhatUserConfig = {
     //   gasPrice: 5000000000,
     //   gasMultiplier: 2,
     // },
-    // rinkeby: {
-    //   url: `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    //   accounts,
-    //   chainId: 4,
-    //   live: true,
-    //   saveDeployments: true,
-    //   tags: ["staging"],
-    //   gasPrice: 5000000000,
-    //   gasMultiplier: 2,
-    // },
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts,
+      chainId: 4,
+      live: true,
+      saveDeployments: true,
+      tags: ["staging"],
+      gasPrice: 5000000000,
+      gasMultiplier: 2,
+    },
     // goerli: {
     //   url: `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
     //   accounts,
@@ -132,14 +123,14 @@ const config: HardhatUserConfig = {
     //   gas: 5198000,
     //   gasMultiplier: 2,
     // },
-    // fantom: {
-    //   url: "https://rpcapi.fantom.network",
-    //   accounts,
-    //   chainId: 250,
-    //   live: true,
-    //   saveDeployments: true,
-    //   gasPrice: 22000000000,
-    // },
+    fantom: {
+      url: "https://rpcapi.fantom.network",
+      accounts,
+      chainId: 250,
+      live: true,
+      saveDeployments: true,
+      // gasPrice: 22000000000,
+    },
     // "fantom-testnet": {
     //   url: "https://rpc.testnet.fantom.network",
     //   accounts,
