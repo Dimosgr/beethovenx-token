@@ -8,8 +8,8 @@ export default async function ({ ethers, deployments, getNamedAccounts, network 
   const beetsDeployment = await deployments.get("BeethovenxToken")
   const beets: BeethovenxToken = (await ethers.getContractAt("contracts/BeethovenxToken.sol:BeethovenxToken", beetsDeployment.address)) as BeethovenxToken
 
-  const timelockDeployment = await deployments.get("Timelock")
-  const timelock: Timelock = (await ethers.getContractAt("Timelock", timelockDeployment.address)) as Timelock
+  // const timelockDeployment = await deployments.get("Timelock")
+  // const timelock: Timelock = (await ethers.getContractAt("Timelock", timelockDeployment.address)) as Timelock
 
   const beetxPerBlock = bn(505, 16)
 
@@ -28,10 +28,10 @@ export default async function ({ ethers, deployments, getNamedAccounts, network 
     await (await beets.transferOwnership(address)).wait()
   }
 
-  const masterChef = (await ethers.getContractAt("BeethovenxMasterChef", address)) as BeethovenxMasterChef
-  if ((await masterChef.owner()) !== timelock.address) {
-    // Transfer ownership of MasterChef to timelock
-    console.log("Transfer ownership of MasterChef to Timelock")
-    await (await masterChef.transferOwnership(timelock.address)).wait()
-  }
+  // const masterChef = (await ethers.getContractAt("BeethovenxMasterChef", address)) as BeethovenxMasterChef
+  // if ((await masterChef.owner()) !== timelock.address) {
+  //   // Transfer ownership of MasterChef to timelock
+  //   console.log("Transfer ownership of MasterChef to Timelock")
+  //   await (await masterChef.transferOwnership(timelock.address)).wait()
+  // }
 }

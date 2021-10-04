@@ -91,7 +91,7 @@ const config: HardhatUserConfig = {
       saveDeployments: true,
       tags: ["staging"],
       // gasPrice: 5000000000,
-      // gasMultiplier: 2,
+      gasMultiplier: 2,
     },
     // goerli: {
     //   url: `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
