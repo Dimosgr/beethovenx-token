@@ -12,5 +12,5 @@ export default async function ({ ethers, getNamedAccounts, deployments }: Hardha
     args: [deployer, 600],
   })
 
-  console.log('args', JSON.stringify(args))
+  console.log("timelock constructor args", JSON.stringify(args))
 }
