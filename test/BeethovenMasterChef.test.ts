@@ -1,5 +1,14 @@
 import { expect } from "chai"
-import { advanceBlock, advanceBlockTo, bn, deployChef, deployContract, deployERC20Mock, setAutomineBlocks } from "./utilities"
+import {
+  advanceBlock,
+  advanceBlockRelativeTo,
+  advanceBlockTo,
+  bn,
+  deployChef,
+  deployContract,
+  deployERC20Mock,
+  setAutomineBlocks,
+} from "./utilities"
 import { ethers } from "hardhat"
 import { BeethovenxMasterChef, BeethovenxToken, RewarderMock } from "../types"
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
@@ -88,20 +97,20 @@ describe("BeethovenxMasterChef", function () {
     await expect(chef.connect(owner).updateEmissionRate(bn(9))).to.be.revertedWith("maximum emission rate of 6 beets per block exceeded")
   })
 
-  it("allows treasury address to update themselves", async function () {
+  it("allows treasury address to be updated by owner", async function () {
     const chef = await deployChef(beets.address, treasury.address, bn(6), 0)
     await beets.transferOwnership(chef.address)
 
     expect(await chef.treasuryAddress()).to.equal(treasury.address)
-    await chef.connect(treasury).treasury(bob.address)
+    await chef.connect(owner).treasury(bob.address)
     expect(await chef.treasuryAddress()).to.equal(bob.address)
   })
 
-  it("allows only the current treasury address to change its address", async function () {
+  it("reverts if anyone but the owner updates the treasury address", async function () {
     const chef = await deployChef(beets.address, treasury.address, bn(6), 200)
     await beets.transferOwnership(chef.address)
 
-    await expect(chef.connect(bob).treasury(bob.address)).to.be.revertedWith("access denied: setting treasury address")
+    await expect(chef.connect(bob).treasury(bob.address)).to.be.revertedWith("Ownable: caller is not the owner")
   })
 
   it("returns amount of pools", async function () {
@@ -511,6 +520,41 @@ describe("BeethovenxMasterChef", function () {
     await chef.connect(alice).deposit(0, 10, alice.address)
     await expect(chef.withdrawAndHarvest(0, 11, alice.address)).to.be.reverted
     expect(await lp.balanceOf(chef.address)).to.equal(10)
+  })
+
+  it("allows harvesting from all pools", async () => {
+    const beetsPerBlock = bn(6)
+    const lpRewards = rewardsCalculator(beetsPerBlock, lpPercentage)
+    const chef = await deployChef(beets.address, treasury.address, beetsPerBlock, 300)
+    await beets.transferOwnership(chef.address)
+
+    const lp = await deployERC20Mock("Lp 1", "lp1", 10_000)
+    const lp2 = await deployERC20Mock("Lp 2", "lp2", 10_000)
+    const lp3 = await deployERC20Mock("Lp 3", "lp3", 10_000)
+
+    await lp.transfer(alice.address, "1000")
+    await lp2.transfer(alice.address, "1000")
+    await lp3.transfer(alice.address, "1000")
+
+    await chef.add("100", lp.address, ethers.constants.AddressZero)
+    await chef.add("100", lp2.address, ethers.constants.AddressZero)
+    await chef.add("100", lp3.address, ethers.constants.AddressZero)
+
+    await setAutomineBlocks(false)
+    await lp.connect(alice).approve(chef.address, bn(1000))
+    await chef.connect(alice).deposit(0, 10, alice.address)
+    await lp2.connect(alice).approve(chef.address, bn(1000))
+    await chef.connect(alice).deposit(1, 10, alice.address)
+    await lp3.connect(alice).approve(chef.address, bn(1000))
+    await chef.connect(alice).deposit(2, 10, alice.address)
+    await setAutomineBlocks(true)
+
+    await advanceBlockTo(((await ethers.provider.getBlockNumber()) + 10).toString())
+
+    const expectedBeets = lpRewards(10)
+
+    await chef.connect(alice).harvestAll(alice.address)
+    expect(await beets.balanceOf(alice.address)).to.equal(expectedBeets)
   })
 })
 
