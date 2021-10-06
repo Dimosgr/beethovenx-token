@@ -5,10 +5,12 @@ export default async function ({ ethers, getNamedAccounts, deployments }: Hardha
 
   const { deployer } = await getNamedAccounts()
 
-  const { address } = await deploy("Timelock", {
+  const { address, args, receipt } = await deploy("Timelock", {
     from: deployer,
     log: true,
     deterministicDeployment: false,
     args: [deployer, 600],
   })
+
+  console.log("timelock constructor args", JSON.stringify(args))
 }

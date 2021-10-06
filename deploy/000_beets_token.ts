@@ -20,12 +20,17 @@ export default async function ({ ethers, getNamedAccounts, deployments }: Hardha
   // 7% of total supply
   const strategicPartnershipFunds = bn(17_500_000)
 
-  const teamFundAddress = process.env.TEAM_FUND_ADDRESS!
+  const teamFundVestingAddress = process.env.TEAM_FUND_VESTING_ADDRESS!
+
   // 13% of total supply
-  const teamFund = bn(32_500_000)
+  const vestedTeamFunds = bn(30_875_000)
+
+  const teamFundAddress = process.env.TEAM_FUND_ADDRESS!
+  const unvestedTeamFund = bn(1_625_000)
 
   // 2% of total supply
   const lbpFunds = bn(5_000_000)
+  const lbpFundAddress = process.env.LBP_FUND_ADDRESS!
 
   if ((await beets.balanceOf(partnershipFundAddress)).eq(0)) {
     console.log(
@@ -34,10 +39,17 @@ export default async function ({ ethers, getNamedAccounts, deployments }: Hardha
     await beets.mint(partnershipFundAddress, strategicPartnershipFunds)
   }
 
+  if ((await beets.balanceOf(teamFundVestingAddress)).eq(0)) {
+    console.log(`minting vested team funds '${vestedTeamFunds}' to team vesting contract address '${teamFundVestingAddress}'`)
+    await beets.mint(teamFundVestingAddress, vestedTeamFunds)
+  }
+
   if ((await beets.balanceOf(teamFundAddress)).eq(0)) {
-    console.log(`minting team funds '${teamFund}' to team vesting contract address '${teamFundAddress}'`)
-    await beets.mint(teamFundAddress, teamFund)
-    console.log(`minting lbp funds '${lbpFunds}' to lbp address '${teamFundAddress}'`)
-    await beets.mint(teamFundAddress, lbpFunds)
+    console.log(`minting unvested team funds '${unvestedTeamFund}' to team contract address '${teamFundAddress}'`)
+    await beets.mint(teamFundAddress, unvestedTeamFund)
+  }
+  if ((await beets.balanceOf(lbpFundAddress)).eq(0)) {
+    console.log(`minting lbp funds '${lbpFunds}' to lbp address '${lbpFundAddress}'`)
+    await beets.mint(lbpFundAddress, lbpFunds)
   }
 }
