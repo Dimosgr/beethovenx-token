@@ -9,7 +9,7 @@ export default async function ({ ethers, getNamedAccounts, deployments }: Hardha
     from: deployer,
     log: true,
     deterministicDeployment: false,
-    args: [deployer, 600],
+    args: [deployer, 21600],
   })
 
   console.log("timelock constructor args", JSON.stringify(args))
