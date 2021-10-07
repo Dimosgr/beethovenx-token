@@ -28,11 +28,11 @@ export default async function ({ ethers, deployments, getNamedAccounts, network 
 
   console.log("masterchef constructor args", JSON.stringify(args))
 
-  // if ((await beets.owner()) !== address) {
-  //   // Transfer BEETS Ownership to Chef
-  //   console.log("Transfer Beets Ownership to Chef")
-  //   await (await beets.transferOwnership(address)).wait()
-  // }
+  if ((await beets.owner()) !== address) {
+    // Transfer BEETS Ownership to Chef
+    console.log("Transfer Beets Ownership to Chef")
+    await (await beets.transferOwnership(address)).wait()
+  }
 
   // const masterChef = (await ethers.getContractAt("BeethovenxMasterChef", address)) as BeethovenxMasterChef
   // if ((await masterChef.owner()) !== timelock.address) {
