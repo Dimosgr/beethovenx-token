@@ -3,9 +3,6 @@ import { HardhatRuntimeEnvironment } from "hardhat/types"
 import { BeethovenxMasterChef, BeethovenxToken, Timelock } from "../types"
 
 export default async function ({ ethers, deployments, getNamedAccounts, network }: HardhatRuntimeEnvironment) {
-  // const timelockDeployment = await deployments.get("Timelock")
-  // const timelock: Timelock = (await ethers.getContractAt("Timelock", timelockDeployment.address)) as Timelock
-
   const masterChef = (await ethers.getContractAt(
     "contracts/BeethovenxMasterChef.sol:BeethovenxMasterChef",
     "0x8166994d9ebBe5829EC86Bd81258149B87faCfd3"

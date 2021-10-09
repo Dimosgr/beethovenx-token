@@ -61,6 +61,7 @@ const config: HardhatUserConfig = {
       chainId: 250,
       live: true,
       saveDeployments: true,
+      gasMultiplier: 30,
     },
     // "fantom-testnet": {
     //   url: "https://rpc.testnet.fantom.network",
